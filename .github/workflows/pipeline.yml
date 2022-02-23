@@ -65,11 +65,19 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
+      - name: join commit messages
+        env:
+          JOIN_COMMIT_MESSAGES: ${{ join(env.COMMIT_MESSAGES) }}
+        run: echo "$JOIN_COMMIT_MESSAGES"
       - name: contain skip check
         env:
-          SKIP_CHECK: ${{ contains(env.COMMIT_MESSAGES, '#skip') }}
+          SKIP_CHECK: ${{ contains(env.COMMIT_MESSAGES, #skip) }}
         run: echo "$SKIP_CHECK"
       - name: contain skip check
         env:
-          SKIP_CHECK: ${{ contains(env.COMMIT_MESSAGES, '#skip') }}
+          SKIP_CHECK: ${{ contains(env.JOIN_COMMIT_MESSAGES, #skip) }}
+        run: echo "$SKIP_CHECK"
+      - name: contain skip check
+        env:
+          SKIP_CHECK: ${{ contains(env.JOIN_COMMIT_MESSAGES, '#skip') }}
         run: echo "$SKIP_CHECK"
