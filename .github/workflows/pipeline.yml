@@ -16,6 +16,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - name: check if statements1
+        env:
+          STATEMENT1: ${{ github.event_name == 'push' }}
+        run: echo "$STATEMENT1"
+      - name: check if statements2
+        env:
+          STATEMENT2: ${{ !contains(join(github.event.commits.*.message), '#skip') }}
+        run: echo "$STATEMENT2"
       - name: npm install 
         run: npm install  
       - name: lint
@@ -33,7 +41,7 @@ jobs:
           command: npm run test:e2e
           wait-on: 'http://localhost:5000'
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "ci-cd-fullstack-2021" #Must be unique in Heroku
@@ -78,6 +86,7 @@ jobs:
           SKIP_CHECK: ${{ contains('#skip', '#skip') }}
         run: echo "$SKIP_CHECK"
       - name: contain skip check
+        if: ${{ github.event_name == 'push' }} && ${{ contains(join(github.event.commits.*.message), '#skip') }}
         env:
           SKIP_CHECK: ${{ contains(join(github.event.commits.*.message), '#skip') }}
         run: echo "$SKIP_CHECK"
