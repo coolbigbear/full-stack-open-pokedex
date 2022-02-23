@@ -16,6 +16,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - name: check if statements1
+        env:
+          STATEMENT1: ${{ github.event_name == 'push' }}
+        run: echo "$STATEMENT1"
+      - name: check if statements2
+        env:
+          STATEMENT2: ${{ !contains(join(github.event.commits.*.message), '#skip') }}
+        run: echo "$STATEMENT2"
       - name: npm install 
         run: npm install  
       - name: lint
