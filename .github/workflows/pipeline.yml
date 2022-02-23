@@ -57,7 +57,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
       - name: Slack Failure-Cancelled Notification
-        if: ${{ job.status != 'success' }}
+        if: always() && job.status != 'success'
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
@@ -65,7 +65,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
       - name: Slack Success Notification
-        if: ${{ job.status == 'success' }}
+        if: always() && job.status == 'success'
         uses: 8398a7/action-slack@v3
         with:
           status: custom
