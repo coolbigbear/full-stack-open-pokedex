@@ -75,9 +75,9 @@ jobs:
         run: echo "$SKIP_CHECK"
       - name: contain skip check
         env:
-          SKIP_CHECK: ${{ contains(env.JOIN_COMMIT_MESSAGES, '#skip') }}
+          SKIP_CHECK: ${{ contains('#skip', '#skip') }}
         run: echo "$SKIP_CHECK"
       - name: contain skip check
         env:
-          SKIP_CHECK: ${{ contains(env.JOIN_COMMIT_MESSAGES, '#skip') }}
+          SKIP_CHECK: ${{ contains(join(github.event.commits.*.message), '#skip') }}
         run: echo "$SKIP_CHECK"
