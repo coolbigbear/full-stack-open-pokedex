@@ -85,8 +85,3 @@ jobs:
         env:
           SKIP_CHECK: ${{ contains('#skip', '#skip') }}
         run: echo "$SKIP_CHECK"
-      - name: contain skip check
-        if: ${{ github.event_name == 'push' }} && ${{ contains(join(github.event.commits.*.message), '#skip') }}
-        env:
-          SKIP_CHECK: ${{ contains(join(github.event.commits.*.message), '#skip') }}
-        run: echo "$SKIP_CHECK"
